@@ -15,6 +15,7 @@ RUN echo "@testing https://alpine.gliderlabs.com/alpine/edge/testing/" >> /etc/a
     && tar -C /srv/ -xzf target/couchdb-lucene-$COUCHDB_LUCENE_VERSION-dist.tar.gz \
     && mv /srv/couchdb-lucene-$COUCHDB_LUCENE_VERSION /srv/couchdb-lucene \
     && mkdir -p /srv/couchdb-lucene/indexes \
+    && chmod o+w /srv/couchdb-lucene/indexes \
     && apk del maven \
     && rm -rf /tmp/build /root/.m2
 VOLUME ["/srv/couchdb-lucene/conf/", "/srv/couchdb-lucene/indexes/"]
