@@ -3,7 +3,7 @@ MAINTAINER Infinite Automata Community <info@infinite.ai>
 ENV COUCHDB_LUCENE_VERSION 1.0.2
 ENV JAVA_HOME /usr/lib/jvm/java-1.7-openjdk/jre
 RUN echo "@testing https://alpine.gliderlabs.com/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk --update add openjdk7 maven@testing openssl java-cacerts ca-certificates \
+    && apk --update add sudo openjdk7 maven@testing openssl java-cacerts ca-certificates \
     && /etc/ca-certificates/update.d/java-cacerts \
     && ln -sf /etc/ssl/certs/java/cacerts $JAVA_HOME/lib/security/cacerts \
     && mkdir -p /tmp/build /srv \
@@ -18,6 +18,7 @@ RUN echo "@testing https://alpine.gliderlabs.com/alpine/edge/testing/" >> /etc/a
     && chmod o+w /srv/couchdb-lucene/indexes \
     && apk del maven \
     && rm -rf /tmp/build /root/.m2
-VOLUME ["/srv/couchdb-lucene/conf/", "/srv/couchdb-lucene/indexes/"]
-USER nobody
-ENTRYPOINT ["/srv/couchdb-lucene/bin/run"]
+COPY bin /srv/bin
+COPY etc /srv/couchdb-lucene/conf
+VOLUME ["/srv/couchdb-lucene/indexes/"]
+ENTRYPOINT ["/srv/bin/search"]

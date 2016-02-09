@@ -1,0 +1,36 @@
+#!/bin/sh
+
+TMPL=${1:-couchdb-lucene.ini.tmpl}
+
+indexes=${COUCHDB_SEARCH_INDEXES:=/srv/couchdb-lucene/indexes}
+host=${COUCHDB_SEARCH_HOST:=localhost}
+port=${COUCHDB_SEARCH_PORT:=5985}
+request_timeout=${COUCHDB_SEARCH_REQUEST_TIMEOUT:=10000}
+changes_timeout=${COUCHDB_SEARCH_CHANGES_TIMEOUT:=60000}
+default_result_limit=${COUCHDB_SEARCH_DEFAULT_RESULT_LIMIT:=25}
+allow_leading_wildcard=${COUCHDB_SEARCH_ALLOW_LEADING_WILDCARD:=false}
+couchdb_username=${COUCHDB_USERNAME}
+couchdb_password=${COUCHDB_PASSWORD}
+couchdb_host=${COUCHDB_HOST:=localhost}
+couchdb_port=${COUCHDB_PORT:=5984}
+couchdb_proto=${COUCHDB_PROTO:=http}
+
+if [ -z ${couchdb_username+x} ] && [ -z ${couchdb_password+x} ]; then
+    couchdb_url="$couchdb_proto://$couchdb_username:$couchdb_password@$couchdb_host:$couchdb_port"
+else
+    couchdb_url="$couchdb_proto://$couchdb_host:$couchdb_port"
+fi
+
+>&2 echo "$(date -Iseconds | sed 's/T/ /; s/+0000//') INFO [Config] Generating configuration"
+
+config=$(cat "$TMPL" \
+    | sed 's,{{indexes}},'$indexes, \
+    | sed 's,{{host}},'$host, \
+    | sed 's,{{port}},'$port, \
+    | sed 's,{{request_timeout}},'$request_timeout, \
+    | sed 's,{{changes_timeout}},'$changes_timeout, \
+    | sed 's,{{default_result_limit}},'$default_result_limit, \
+    | sed 's,{{allow_leading_wildcard}},'$allow_leading_wildcard, \
+    | sed 's,{{couchdb_url}},'$couchdb_url,)
+
+echo "$config"

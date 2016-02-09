@@ -1,0 +1,7 @@
+#!/bin/sh
+
+conf_dir=/srv/couchdb-lucene/conf
+
+/srv/bin/generate-config $conf_dir/couchdb-lucene.ini.tmpl > $conf_dir/couchdb-lucene.ini
+
+exec sudo -u nobody /srv/couchdb-lucene/bin/run
