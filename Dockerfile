@@ -1,24 +1,31 @@
 FROM gliderlabs/alpine:3.3
 MAINTAINER Infinite Automata Community <info@infinite.ai>
+
 ENV COUCHDB_LUCENE_VERSION 1.0.2
+ENV CONFD_VERSION 0.11.0
 ENV JAVA_HOME /usr/lib/jvm/java-1.7-openjdk/jre
+
+ENV COUCHDB_SEARCH_INDEXES /srv/couchdb-lucene/indexes
+ENV COUCHDB_SEARCH_HOST localhost
+ENV COUCHDB_SEARCH_PORT 5985
+ENV COUCHDB_SEARCH_REQUEST_TIMEOUT 10000
+ENV COUCDHB_SEARCH_CHANGES_TIMEOUT 60000
+ENV COUCHDB_SEARCH_DEFAULT_RESULT_LIMIT 25
+ENV COUCHDB_SEARCH_ALLOW_LEADING_WILDCARD false
+ENV COUCHDB_PROTOCOL http
+ENV COUCHDB_HOST localhost
+ENV COUCHDB_PORT 5984
+
+RUN mkdir -p /tmp/build /srv
+COPY Makefile /tmp/build/Makefile
+WORKDIR /tmp/build
 RUN echo "@testing https://alpine.gliderlabs.com/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk --update add sudo openjdk7 maven@testing openssl java-cacerts ca-certificates \
-    && /etc/ca-certificates/update.d/java-cacerts \
-    && ln -sf /etc/ssl/certs/java/cacerts $JAVA_HOME/lib/security/cacerts \
-    && mkdir -p /tmp/build /srv \
-    && cd /tmp/build \
-    && wget -O- "https://github.com/rnewson/couchdb-lucene/archive/v$COUCHDB_LUCENE_VERSION.tar.gz" \
-        | tar -xzf - \
-    && cd couchdb-lucene-$COUCHDB_LUCENE_VERSION \
-    && /usr/share/java/maven-3.3.3/bin/mvn \
-    && tar -C /srv/ -xzf target/couchdb-lucene-$COUCHDB_LUCENE_VERSION-dist.tar.gz \
-    && mv /srv/couchdb-lucene-$COUCHDB_LUCENE_VERSION /srv/couchdb-lucene \
-    && mkdir -p /srv/couchdb-lucene/indexes \
+    && apk --update add sudo make curl maven@testing openjdk7 openssl java-cacerts ca-certificates \
+    && make install \
     && chmod o+w /srv/couchdb-lucene/indexes \
-    && apk del maven \
+    && apk del --purge make maven curl \
     && rm -rf /tmp/build /root/.m2
 COPY bin /srv/bin
-COPY etc /srv/couchdb-lucene/conf
+COPY etc /etc/confd
 VOLUME ["/srv/couchdb-lucene/indexes/"]
-ENTRYPOINT ["/srv/bin/search"]
+ENTRYPOINT ["/srv/bin/start.sh"]

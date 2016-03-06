@@ -1,0 +1,17 @@
+[template]
+src = "couchdb-lucene.ini.tmpl"
+dest = "/srv/couchdb-lucene/conf/couchdb-lucene.ini"
+keys = [
+    "COUCHDB_SEARCH_INDEXES",
+    "COUCHDB_SEARCH_HOST",
+    "COUCHDB_SEARCH_PORT",
+    "COUCHDB_SEARCH_REQUEST_TIMEOUT",
+    "COUCHDB_SEARCH_CHANGES_TIMEOUT",
+    "COUCHDB_DEFAULT_RESULT_LIMIT",
+    "COUCHDB_ALLOW_LEADING_WILDCARD",
+    "COUCHDB_USERNAME",
+    "COUCHDB_PASSWORD",
+    "COUCHDB_PROTOCOL",
+    "COUCHDB_HOST",
+    "COUCHDB_PORT"
+]

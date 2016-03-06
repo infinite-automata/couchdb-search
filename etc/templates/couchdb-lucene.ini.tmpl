@@ -1,0 +1,16 @@
+[lucene]
+# The output directory for Lucene indexes.
+dir={{getenv "COUCHDB_SEARCH_INDEXES"}}
+host={{getenv "COUCHDB_SEARCH_HOST"}}
+port={{getenv "COUCHDB_SEARCH_PORT"}}
+timeout={{getenv "COUCHDB_SEARCH_REQUEST_TIMEOUT"}}
+# changes_timeout={{getenv "COUCHDB_SEARCH_CHANGES_TIMEOUT"}}
+limit={{getenv "COUCHDB_SEARCH_DEFAULT_RESULT_LIMIT"}}
+allowLeadingWildcard={{getenv "COUCHDB_SEARCH_ALLOW_LEADING_WILDCARD"}}
+
+[local]
+{{if exists "COUCHDB_USERNAME"}}
+url={{getenv "COUCHDB_PROTOCOL"}}://{{getenv "COUCHDB_USERNAME"}}:{{getenv "COUCHDB_PASSWORD"}}@{{getenv "COUCHDB_HOST"}}:{{getenv "COUCHDB_HOST"}}
+{{else}}
+url={{getenv "COUCHDB_PROTOCOL"}}://{{getenv "COUCHDB_HOST"}}:{{getenv "COUCHDB_PORT"}}
+{{end}}

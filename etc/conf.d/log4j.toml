@@ -1,0 +1,4 @@
+[template]
+src = "log4j.xml.tmpl"
+dest = "/srv/couchdb-lucene/conf/log4j.xml"
+keys = []

@@ -17,8 +17,8 @@ Configuration is generated at runtime.
 - `COUCHDB_SEARCH_ALLOW_LEADING_WILDCARD`: Allow leading wildcard in queries (default `false`)
 - `COUCHDB_USERNAME`: CouchDB username
 - `COUCHDB_PASSWORD`: CouchDB password
+- `COUCHDB_PROTOCOL`: CouchDB protocol (default `http`)
 - `COUCHDB_HOST`: CouchDB host
 - `COUCHDB_PORT`: CouchDB port
-- `COUCHDB_PROTO`: CouchDB protocol (default `http`)
 
 [couchdb-lucene]: https://github.com/rnewson/couchdb-lucene
