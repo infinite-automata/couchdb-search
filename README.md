@@ -1,4 +1,4 @@
-## infiniteautomata/couchdb-search
+## quay.io/infiniteautomata/couchdb-search
 
 A container for indexing CouchDB databases. Packages
 [`rnewson/couchdb-lucene`][couchdb-lucene].
