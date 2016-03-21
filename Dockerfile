@@ -1,5 +1,4 @@
 FROM gliderlabs/alpine:3.3
-MAINTAINER Infinite Automata Community <info@infinite.ai>
 
 ENV COUCHDB_LUCENE_VERSION 1.0.2
 ENV CONFD_VERSION 0.11.0
